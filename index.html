@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="nineBynine.js"></script>
+
+
+    <style>
+        .mar-right {
+            margin-right: 5px;
+        }
+
+        .mar-bot {
+            margin-bottom: 5px;
+        }
+
+        .f-region {
+            background-color: skyblue !important;
+        }
+
+        .s-region {
+            background-color: palegreen;
+        }
+
+        .red {
+            color: white;
+            background-color: red !important;
+        }
+
+        .black {
+            color: black;
+        }
+        .margin{
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body ng-app="Sudoku">
+
+
+<div class="container">
+    <h2>Artificial Intelligence</h2>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#9by9">9 * 9 Sudoku Classic</a></li>
+        <li><a href="#4by4">4 * 4 Sudoku Variant</a></li>
+        <li><a href="#contributors">Contributors</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="9by9" class="tab-pane fade in active">
+            <div ng-controller="nineByNineCtrl">
+                <h1>9 x 9 Sudoku (Classic)</h1>
+
+                <div ng-repeat="(indexP, row) in nineBynine_array2D">
+                    <input class="s-region" ng-class="{'mar-right': $index == 2 || $index == 5 || $index == 8, 'mar-bot': indexP == 2 || indexP == 5 || indexP == 8 ,
+                'f-region': ($index <= 2 && indexP <= 2) || ($index >= 3 && $index < 6  && indexP >= 3 && indexP < 6) || ($index >= 6 && indexP >= 6),
+                'red': col.color == 'red', 'black': col.color == 'black'}"
+                           type="text" name="" ng-repeat="col in row" ng-change="box_changed9by9()" ng-model="col.text"
+                           size="4"/>
+                </div>
+                <div>
+                    <button ng-click="solve9by9()" type="button" class="btn btn-success">Solve</button>
+                    <button data-toggle="modal" data-target="#confirm-delete1"  data type="button" class="btn btn-danger">Clear</button>
+                </div>
+                <div class="modal fade" id="confirm-delete1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel1">Confirm Delete</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <p>You are about to clear this sudoku, this procedure is irreversible.</p>
+                                <p>Do you want to proceed?</p>
+                                <p class="debug-url"></p>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <a class="btn btn-danger btn-ok" data-dismiss="modal" data-dismiss="modal" ng-click="clear9by9()">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="4by4" class="tab-pane fade">
+            <div ng-controller="mainCtrl">
+                <h1>4 x 4 Sudoku</h1>
+
+                <div ng-repeat="(indexP, row) in fourByfour_array2D">
+                    <!--{{$index}}-->
+                    <!--{{row}}-->
+                    <input class="s-region" ng-class="{'mar-right': $index == 1, 'mar-bot': indexP == 1 ,
+                'f-region': ($index < 2 && indexP < 2) || ($index > 1 && indexP > 1),
+                'red': col.color == 'red', 'black': col.color == 'black'}"
+                           type="text" name="" id="" ng-repeat="col in row" ng-change="v4box_changed()"
+                           ng-model="col.text" size="4"/>
+                </div>
+                <div style="margin-top: 10px;">
+                    <button ng-click="solve4()" type="button" class="btn btn-success">Solve</button>
+                    <button data-toggle="modal" data-target="#confirm-delete"  type="button" class="btn btn-danger">Clear</button>
+
+                </div>
+                <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <p>You are about to clear this sudoku, this procedure is irreversible.</p>
+                                <p>Do you want to proceed?</p>
+                                <p class="debug-url"></p>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <a class="btn btn-danger btn-ok" data-dismiss="modal" ng-click="clear()">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="contributors" class="tab-pane fade">
+            <div class="jumbotron  col-md-4 margin">
+                <h2>M.Qaseem Wakeel</h2>
+                <p>22418</p>
+            </div>
+            <div class="jumbotron  col-md-4 margin" style="margin-top: 40px ">
+                <h2>Adnan Irfan</h2>
+                <p>22412</p>
+            </div>
+            <div class="jumbotron  col-md-4 margin">
+                <h2>Ahmed Yar</h2>
+                <p>22734</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".nav-tabs a").click(function () {
+            $(this).tab('show');
+        });
+    });
+</script>
+
+
+</body>
+</html>
